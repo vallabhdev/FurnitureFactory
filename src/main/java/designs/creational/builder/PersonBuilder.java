@@ -1,27 +1,27 @@
 package designs.creational.builder;
 
-public class BuilderA {
+public class PersonBuilder {
     private String name;
     private int age;
     private String city;
     private String phone;
 
-    public BuilderA withName(String value) {
+    public PersonBuilder withName(String value) {
         this.name = value;
         return this;
     }
 
-    public BuilderA withAge(int value) {
+    public PersonBuilder withAge(int value) {
         this.age = value;
         return this;
     }
 
-    public BuilderA withCity(String value) {
+    public PersonBuilder withCity(String value) {
         this.city = value;
         return this;
     }
 
-    public BuilderA withPhone(String value) {
+    public PersonBuilder withPhone(String value) {
         this.phone = value;
         return this;
     }

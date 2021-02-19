@@ -1,6 +1,7 @@
 package designs.structural.facade;
 
 import designs.structural.facade.objects.Iphone;
+import designs.structural.facade.objects.Nokia;
 import designs.structural.facade.objects.Samsung;
 
 //A Facade Pattern says that just "just provide a unified and simplified interface to a set of interfaces
@@ -10,20 +11,27 @@ import designs.structural.facade.objects.Samsung;
 public class Shopkeeper {
     private Iphone iphone;
     private Samsung samsung;
+    private Nokia nokia;
 
     public Shopkeeper() {
         this.iphone = new Iphone();
         this.samsung = new Samsung();
+        this.nokia = new Nokia();
     }
 
     public void saleIphone() {
-        iphone.modelNo();
-        iphone.price();
+        iphone.getModelNo();
+        iphone.getPrice();
     }
 
     public void saleSamsung() {
-        samsung.modelNo();
-        samsung.price();
+        samsung.getModelNo();
+        samsung.getPrice();
+    }
+
+    public void saleNokia(){
+        nokia.getModelNo();
+        nokia.getPrice();
     }
 
 }

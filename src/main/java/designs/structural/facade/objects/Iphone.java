@@ -2,12 +2,12 @@ package designs.structural.facade.objects;
 
 public class Iphone implements Mobile {
     @Override
-    public void modelNo() {
+    public void getModelNo() {
         System.out.println("iphone x");
     }
 
     @Override
-    public void price() {
+    public void getPrice() {
         System.out.println("60K");
     }
 }

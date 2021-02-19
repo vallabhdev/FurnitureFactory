@@ -1,13 +1,13 @@
 package designs.structural.facade.objects;
 
-public class Samsung implements Mobile {
+public class Nokia implements Mobile {
     @Override
     public void getModelNo() {
-        System.out.println("samsung m31");
+        System.out.println("Nokia lumia");
     }
 
     @Override
     public void getPrice() {
-        System.out.println("16K");
+        System.out.println("26K");
     }
 }

@@ -1,8 +1,8 @@
 package designs.structural.facade.objects;
 
 public interface Mobile {
-    void modelNo();
+    void getModelNo();
 
-    void price();
+    void getPrice();
 
 }

@@ -12,7 +12,7 @@ public class CompositeClient {
         for (Employee each : Arrays.asList(ceo, headOfEng, associate)) {
             System.out.println("Self = " + each);
             for (Employee subordinate : each.getSubordinates()) {
-                System.out.println(subordinate);
+                System.out.println("My Subordinate is :" + subordinate);
             }
         }
     }

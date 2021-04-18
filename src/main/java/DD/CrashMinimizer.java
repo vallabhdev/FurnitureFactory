@@ -1,6 +1,5 @@
 package DD;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,39 +7,41 @@ import java.util.LinkedList;
 import java.util.List;
 
 class CrashMinimizer {
-
-    /**
-     * This function minimizes a crashing test case to
-     * a single character that still causes the crash.
-     *
-     * @param //String command - the command to execute the
-     *                 program under test.
-     * @param //String failingTestInputFilename - the path
-     *                 to the file causing a crash in the
-     *                 target program. The contents of
-     *                 this file are to be minimized by
-     *                 this function.
-     * @return String - the final, minimized version of the
-     * failing test input file which still
-     * causes a crash.
-     */
-    public static String minimize(
-            String command, String failingInputFilename
-    ) throws FileNotFoundException, IOException {
+    public static String minimize(String command, String failingInputFilename)
+            throws IOException {
         List<String> lines = Utilities.readFile(failingInputFilename);
-        lines = splitIntoEachWord(lines);
+        return processBasedOnLineSize(command, lines);
+    }
 
-        int splitSize = 1;
-        while (lines.size() >= 1) {
+    private static String processBasedOnLineSize(String command, List<String> lines) throws IOException {
+        int splitSize = 2;
+        if (lines.size() == 0) {
+            return "";
+        }
+        lines = lines.size() > 1 ? lines : splitIntoEachWord(lines);
+
+        List<String> returnedLines = getBuggyChar(command, lines, splitSize);
+        if (returnedLines.size() == lines.size()) {
+            return "";
+        } else if (returnedLines.size() == 1) {
+            returnedLines = getBuggyChar(command, splitIntoEachWord(returnedLines), splitSize);
+            List<String> forEachChar = Arrays.asList(returnedLines.get(0).split(""));
+            returnedLines = getBuggyChar(command, forEachChar, splitSize);
+        }
+        return returnedLines.get(0);
+    }
+
+    private static List<String> getBuggyChar(String command, List<String> lines, int splitSize) throws IOException {
+        while (lines.size() >= 2) {
             List<List<String>> subsets = split(lines, splitSize);
             boolean isTestFailing = false;
 
             for (List<String> subset : subsets) {
                 List<String> reduced = removeSubsetFromLine(lines, subset);
-                Utilities.writeToFile("output.txt", reduced);
-                String result = Utilities.runCommand(command + " output.txt");
+                Utilities.writeToFile("reduced.txt", new ArrayList<>(reduced));
+                String result = Utilities.runCommand(command + " reduced.txt");
 
-                if (result.contains("Exception")) {
+                if (result.contains("ArrayIndexOutOfBoundsException")) {
                     lines = reduced;
                     splitSize = Math.max(splitSize - 1, 2);
                     isTestFailing = true;
@@ -55,8 +56,13 @@ class CrashMinimizer {
                 splitSize = Math.min(splitSize * 2, lines.size());
             }
         }
-        List<String> minimized = Utilities.readFile("output.txt");
-        return minimized.get(0);
+        return lines;
+    }
+
+    private static List<String> removeSubsetFromLine(List<String> a, List<String> b) {
+        List<String> result = new LinkedList<>(a);
+        result.removeAll(b);
+        return result;
     }
 
     private static List<List<String>> split(List<String> s, int n) {
@@ -68,12 +74,6 @@ class CrashMinimizer {
             position += subset.size();
         }
         return subsets;
-    }
-
-    private static List<String> removeSubsetFromLine(List<String> a, List<String> b) {
-        List<String> result = new LinkedList<>(a);
-        result.removeAll(b);
-        return result;
     }
 
     private static List<String> splitIntoEachWord(List<String> lines) {

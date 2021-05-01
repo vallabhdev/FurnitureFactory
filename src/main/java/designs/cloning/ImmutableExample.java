@@ -1,15 +1,18 @@
 package designs.cloning;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class ImmutableExample {
     private final String dataMember;
+    private final Integer[] list;
     private final Map<String, String> map;
 
 
-    public ImmutableExample(String dataMember, Map<String, String> map) {
+    public ImmutableExample(String dataMember, Map<String, String> map, Integer[] list) {
         this.dataMember = dataMember;
+        this.list = list;
         this.map = new HashMap<>();
         for (String eachKey : map.keySet()) {
             this.map.put(eachKey, map.get(eachKey));
@@ -26,5 +29,18 @@ public final class ImmutableExample {
             copyOfMap.put(eachKey, map.get(eachKey));
         }
         return copyOfMap;
+    }
+
+    public Integer[] getList() {
+        return list;
+    }
+
+    @Override
+    public String toString() {
+        return "ImmutableExample{" +
+                "dataMember='" + dataMember + '\'' +
+                ", list=" + Arrays.toString(list) +
+                ", map=" + map +
+                '}';
     }
 }

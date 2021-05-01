@@ -8,6 +8,6 @@ public class Circle implements Shape {
 
     @Override
     public int calculateArea(int radius, int lenght, int breadth) {
-        return 2 * (22 / 7) * radius;
+        return (22 / 7) * radius * radius;
     }
 }

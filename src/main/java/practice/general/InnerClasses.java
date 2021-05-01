@@ -19,8 +19,8 @@ public class InnerClasses {
     }
 
     private class Into {
-        private int age;
-        String name;
+//        private int age;
+//        String name;
 
         void defaultMethod() {
             System.out.println(age + name);

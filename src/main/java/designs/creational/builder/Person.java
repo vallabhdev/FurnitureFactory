@@ -32,7 +32,7 @@ public class Person {
                 '}';
     }
 
-    public static class PersonBuilder {
+    static class PersonBuilder {
 
         private String name;
         private int age;

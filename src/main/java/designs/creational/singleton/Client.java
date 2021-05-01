@@ -6,5 +6,6 @@ public class Client {
         SingleTonTest i1 = SingleTonTest.getInstance();
         SingleTonTest i2 = SingleTonTest.getInstance();
         System.out.println(i1.equals(i2));
+//        assert i1.equals(new Client()) : "Object is not singleton";
     }
 }

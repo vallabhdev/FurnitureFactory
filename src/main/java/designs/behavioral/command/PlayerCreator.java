@@ -14,7 +14,7 @@ public class PlayerCreator {
 
     static {
         final Map<String, Command> players = new HashMap<>();
-        players.put("TENNIS", TennisPlayer::new);
+        players.put("TENNIS", () -> new TennisPlayer());
         players.put("FOOTBALL", FootballPlayer::new);
         players.put("SNOOKER", SnookerPlayer::new);
         PLAYERS = Collections.unmodifiableMap(players);

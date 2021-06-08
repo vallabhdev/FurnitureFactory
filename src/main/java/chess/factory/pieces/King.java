@@ -3,27 +3,16 @@ package chess.factory.pieces;
 import chess.Board;
 import chess.Moves;
 import chess.factory.Piece;
-import chess.factory.Steps;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static chess.Moves.*;
-import static chess.factory.Steps.SINGLE;
 
 public class King extends Piece {
     @Override
     public Set<String> suggestions(String spot, Board board) {
         Set<String> suggestions = new HashSet<>();
-        possibleMoves().forEach(move -> {
-            try {
-                suggestions.addAll(getNextPosFor(spot, move, board));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("can't move to :" + move.name());
-            }
-        });
+        possibleMoves().forEach(move -> suggestions.addAll(getNextPosFor(spot, move, board)));
         return suggestions;
     }
 
@@ -32,28 +21,74 @@ public class King extends Piece {
         return Arrays.asList(VERTICAL, HORIZONTAL, DIAGONAL);
     }
 
-    @Override
-    public Steps possibleSteps() {
-        return SINGLE;
-    }
-
     private List<String> getNextPosFor(String spot, Moves move, Board board) {
-        String[][] spots = board.getSpots();
         switch (move) {
             case HORIZONTAL:
-                return Arrays.asList(spots[board.findXIndexOf(spot)][board.findYIndexOf(spot) - 1],
-                        spots[board.findXIndexOf(spot)][board.findYIndexOf(spot) + 1]);
+                return getAllHorizontalSpotsFor(spot, board);
             case VERTICAL:
-                return Arrays.asList(spots[board.findXIndexOf(spot) + 1][board.findYIndexOf(spot)],
-                        spots[board.findXIndexOf(spot) - 1][board.findYIndexOf(spot)]);
+                return getAllVerticalSpotsFor(spot, board);
             case DIAGONAL:
-                return Arrays.asList(spots[board.findXIndexOf(spot) + 1][board.findYIndexOf(spot) - 1],
-                        spots[board.findXIndexOf(spot) - 1][board.findYIndexOf(spot) - 1],
-                        spots[board.findXIndexOf(spot) + 1][board.findYIndexOf(spot) + 1],
-                        spots[board.findXIndexOf(spot) - 1][board.findYIndexOf(spot) + 1]);
+                return getAllDiagonalSpotsFor(spot, board);
             default:
                 break;
         }
         return null;
+    }
+
+    private List<String> getAllHorizontalSpotsFor(String spot, Board board) {
+        String[][] spots = board.getSpots();
+        final int x = board.findXIndexOf(spot);
+        final int y = board.findYIndexOf(spot);
+        List<String> horizontalSpots = new ArrayList<>();
+        if (isValidIndex(x)) {
+            if (isValidIndex(y - 1)) {
+                horizontalSpots.add(spots[x][y - 1]);
+            }
+            if (isValidIndex(y + 1)) {
+                horizontalSpots.add(spots[x][y + 1]);
+            }
+        }
+        return horizontalSpots;
+    }
+
+    private List<String> getAllVerticalSpotsFor(String spot, Board board) {
+        String[][] spots = board.getSpots();
+        final int x = board.findXIndexOf(spot);
+        final int y = board.findYIndexOf(spot);
+        List<String> verticalSpots = new ArrayList<>();
+        if (isValidIndex(y)) {
+            if (isValidIndex(x + 1)) {
+                verticalSpots.add(spots[x + 1][y]);
+            }
+            if (isValidIndex(x - 1)) {
+                verticalSpots.add(spots[x - 1][y]);
+            }
+        }
+        return verticalSpots;
+    }
+
+    private List<String> getAllDiagonalSpotsFor(String spot, Board board) {
+        String[][] spots = board.getSpots();
+        final int x = board.findXIndexOf(spot);
+        final int y = board.findYIndexOf(spot);
+        List<String> diagonalSpots = new ArrayList<>();
+
+        if (isValidIndex(x + 1) && isValidIndex(y - 1)) {
+            diagonalSpots.add(spots[x + 1][y - 1]);
+        }
+        if (isValidIndex(x - 1) && isValidIndex(y - 1)) {
+            diagonalSpots.add(spots[x - 1][y - 1]);
+        }
+        if (isValidIndex(x + 1) && isValidIndex(y + 1)) {
+            diagonalSpots.add(spots[x + 1][y + 1]);
+        }
+        if (isValidIndex(x - 1) && isValidIndex(y + 1)) {
+            diagonalSpots.add(spots[x - 1][y + 1]);
+        }
+        return diagonalSpots;
+    }
+
+    private boolean isValidIndex(int index) {
+        return index >= 0 && index <= 7;
     }
 }

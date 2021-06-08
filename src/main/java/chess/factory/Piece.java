@@ -10,6 +10,4 @@ public abstract class Piece {
     public abstract Set<String> suggestions(String spot, Board board);
 
     public abstract List<Moves> possibleMoves();
-
-    public abstract Steps possibleSteps();
 }
